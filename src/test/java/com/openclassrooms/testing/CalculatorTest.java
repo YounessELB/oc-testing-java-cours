@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.text.MessageFormat;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -141,6 +144,25 @@ public class CalculatorTest {
 		int number = 0;
 		Set<Integer> actualDigits = calculatorUnderTest.digitsSet(number);
 		assertThat(actualDigits).containsExactly(0);
+	}
+
+	@Test
+	void testLocalVarInferenceJava10() {
+		var number = 0;
+		var list = new ArrayList<String>();
+		var map = new HashMap<Integer, String>();
+
+		list.add("firstListElement");
+		map.put(1, "firstMapElementValue");
+
+		assertThat(number).isZero();
+
+		assertThat(list)
+		.hasSize(1)
+		.containsOnly("firstListElement")
+		.first().isEqualTo("firstListElement");
+
+		assertThat(map).containsOnly(Map.entry(1, "firstMapElementValue"));
 	}
 
 }
